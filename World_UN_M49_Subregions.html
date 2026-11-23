@@ -1,0 +1,2241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>世界地理次区域与文化板块划分交互地图 (UN M49)</title>
+  <style>
+    /* =========================================================================
+       100% 离线自包含现代 UI 样式系统 (无外部 CDN 依赖，毫秒级渲染)
+       ========================================================================= */
+    :root {
+      --bg-app: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-subtle: #f1f5f9;
+      --bg-ocean: #e6f0f8;
+      --border-color: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --accent-blue: #2563eb;
+      --accent-blue-hover: #1d4ed8;
+      --accent-blue-soft: #eff6ff;
+      --accent-indigo: #4f46e5;
+      --accent-indigo-soft: #eef2ff;
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+      --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
+      --shadow-xl: 0 12px 28px rgba(15, 23, 42, 0.16);
+      --label-text: #0f172a;
+      --label-sub: #334155;
+      --label-halo: rgba(255, 255, 255, 0.94);
+      --leader-stroke: rgba(30, 41, 59, 0.55);
+      --country-stroke: #ffffff;
+    }
+
+    html.dark {
+      --bg-app: #020617;
+      --bg-card: #0f172a;
+      --bg-subtle: #1e293b;
+      --bg-ocean: #0b1324;
+      --border-color: #1e293b;
+      --border-strong: #334155;
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #64748b;
+      --accent-blue: #3b82f6;
+      --accent-blue-hover: #60a5fa;
+      --accent-blue-soft: rgba(30, 58, 138, 0.45);
+      --accent-indigo: #818cf8;
+      --accent-indigo-soft: rgba(49, 46, 129, 0.45);
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+      --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.5);
+      --shadow-xl: 0 14px 32px rgba(0, 0, 0, 0.7);
+      --label-text: #f8fafc;
+      --label-sub: #cbd5e1;
+      --label-halo: rgba(11, 19, 36, 0.92);
+      --leader-stroke: rgba(226, 232, 240, 0.65);
+      --country-stroke: #0f172a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+      background-color: var(--bg-app);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.45); border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.75); }
+
+    /* 顶部栏 */
+    .app-header {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      padding: 10px 16px;
+    }
+
+    .header-inner {
+      max-width: 1600px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #2563eb, #4f46e5);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.28);
+    }
+
+    .brand-title {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--text-primary);
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* 分段切换器 */
+    .segmented {
+      display: inline-flex;
+      align-items: center;
+      background: var(--bg-subtle);
+      padding: 3px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      gap: 2px;
+    }
+
+    .seg-btn {
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 11px;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .seg-btn:hover {
+      color: var(--text-primary);
+    }
+
+    .seg-btn.active {
+      background: var(--bg-card);
+      color: var(--accent-blue);
+      font-weight: 700;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .seg-btn.active.indigo {
+      color: var(--accent-indigo);
+    }
+
+    /* 右侧工具区 */
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      position: relative;
+      width: 195px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 6px 26px 6px 28px;
+      font-size: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-subtle);
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent-blue);
+      background: var(--bg-card);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .search-clear {
+      position: absolute;
+      right: 7px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 14px;
+      display: none;
+    }
+
+    .search-dropdown {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(100% + 6px);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      box-shadow: var(--shadow-xl);
+      max-height: 250px;
+      overflow-y: auto;
+      z-index: 50;
+      display: none;
+    }
+
+    .search-item {
+      width: 100%;
+      border: none;
+      background: transparent;
+      text-align: left;
+      padding: 8px 11px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      cursor: pointer;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-primary);
+    }
+
+    .search-item:last-child { border-bottom: none; }
+    .search-item:hover { background: var(--bg-subtle); }
+
+    .icon-btn {
+      border: 1px solid var(--border-color);
+      background: var(--bg-subtle);
+      color: var(--text-secondary);
+      border-radius: 10px;
+      padding: 6px 9px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s;
+    }
+
+    .icon-btn:hover {
+      background: var(--border-color);
+      color: var(--text-primary);
+    }
+
+    .primary-btn {
+      border: none;
+      background: var(--accent-blue);
+      color: #ffffff;
+      border-radius: 10px;
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: var(--shadow-sm);
+      transition: background 0.2s;
+    }
+
+    .primary-btn:hover {
+      background: var(--accent-blue-hover);
+    }
+
+    /* 主网格布局 */
+    .main-grid {
+      flex: 1;
+      max-width: 1600px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 14px 16px;
+      display: grid;
+      grid-template-columns: 1fr 350px;
+      gap: 14px;
+    }
+
+    @media (max-width: 1024px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* 地图面板 */
+    .map-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+      min-height: 540px;
+    }
+
+    .continent-bar {
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--border-color);
+      background: var(--bg-card);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      overflow-x: auto;
+    }
+
+    .continent-tabs {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .cont-btn {
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 11px;
+      border-radius: 8px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .cont-btn:hover {
+      background: var(--bg-subtle);
+      color: var(--text-primary);
+    }
+
+    .cont-btn.active {
+      background: var(--accent-blue);
+      color: #ffffff;
+    }
+
+    .map-hint {
+      font-size: 11px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .map-viewport {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      background: var(--bg-ocean);
+      user-select: none;
+      cursor: grab;
+      overflow: hidden;
+    }
+
+    .map-viewport:active {
+      cursor: grabbing;
+    }
+
+    #world-map {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .country-shape {
+      cursor: pointer;
+      transition: fill-opacity 0.25s ease, fill 0.3s ease;
+    }
+
+    .country-shape:hover {
+      filter: brightness(1.07);
+    }
+
+    .subregion-outline {
+      pointer-events: none;
+      fill: none;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+    }
+
+    .region-label-group {
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .region-label-title {
+      font-weight: 700;
+      paint-order: stroke fill;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+    }
+
+    .region-label-sub {
+      font-weight: 600;
+      paint-order: stroke fill;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+    }
+
+    /* 缩放控制器 */
+    .zoom-controls {
+      position: absolute;
+      bottom: 14px;
+      left: 14px;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    .zoom-btn {
+      width: 34px;
+      height: 32px;
+      border: none;
+      background: transparent;
+      color: var(--text-primary);
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+
+    .zoom-btn:hover { background: var(--bg-subtle); }
+    .zoom-divider { height: 1px; background: var(--border-color); }
+
+    /* 聚焦提示徽章 */
+    .filter-badge {
+      position: absolute;
+      bottom: 14px;
+      right: 14px;
+      background: rgba(15, 23, 42, 0.92);
+      color: #f8fafc;
+      padding: 7px 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid #334155;
+      z-index: 10;
+    }
+
+    .filter-badge button {
+      border: none;
+      background: #334155;
+      color: #fff;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .filter-badge button:hover { background: #475569; }
+
+    /* 真实边界数据源状态浮标 (非阻塞) */
+    .map-status-pill {
+      position: absolute;
+      top: 12px;
+      right: 14px;
+      background: rgba(15, 23, 42, 0.84);
+      backdrop-filter: blur(8px);
+      color: #e2e8f0;
+      padding: 5px 11px;
+      border-radius: 999px;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      z-index: 12;
+      transition: opacity 0.3s ease;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #38bdf8;
+    }
+
+    .status-dot.ready { background: #22c55e; }
+    .status-dot.error { background: #f59e0b; }
+
+    /* 右侧边栏 */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: calc(100vh - 88px);
+    }
+
+    @media (max-width: 1024px) {
+      .sidebar { max-height: none; }
+    }
+
+    .detail-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: var(--shadow-sm);
+      flex-shrink: 0;
+    }
+
+    .legend-card {
+      flex: 1;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-height: 360px;
+    }
+
+    .legend-header {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .legend-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .legend-group-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      padding: 4px 2px 2px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .legend-item {
+      padding: 9px 11px;
+      border-radius: 11px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-subtle);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .legend-item:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-1px);
+    }
+
+    .legend-item.selected {
+      background: var(--accent-blue-soft);
+      border-color: var(--accent-blue);
+    }
+
+    .legend-item.selected.indigo {
+      background: var(--accent-indigo-soft);
+      border-color: var(--accent-indigo);
+    }
+
+    /* 悬浮提示卡片 Tooltip */
+    .tooltip-card {
+      position: fixed;
+      z-index: 60;
+      pointer-events: none;
+      display: none;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 11px 13px;
+      box-shadow: var(--shadow-xl);
+      min-width: 225px;
+      max-width: 280px;
+    }
+
+    /* 提示条 Toast */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0f172a;
+      color: #ffffff;
+      font-size: 12px;
+      padding: 9px 16px;
+      border-radius: 10px;
+      box-shadow: var(--shadow-xl);
+      border: 1px solid #334155;
+      z-index: 70;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 顶部导航与控制栏 -->
+  <header class="app-header">
+    <div class="header-inner">
+      <!-- 标题 -->
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title">世界地理次区域与文化板块交互地图</div>
+          <div class="brand-sub">联合国 UN M49 标准 (5大洲 · 22次区域) vs 地缘文化体系对比</div>
+        </div>
+      </div>
+
+      <!-- 模式切换器 -->
+      <div class="segmented">
+        <button id="mode-m49" class="seg-btn active">UN M49 地理次区域 (22区)</button>
+        <button id="mode-cultural" class="seg-btn">文化与地缘板块 (对比视图)</button>
+      </div>
+
+      <!-- 右侧工具控件 -->
+      <div class="toolbar-actions">
+        <!-- 地图文字标注模式 -->
+        <div class="segmented" title="切换地图上的次区域文字标注">
+          <span style="font-size:11px; color:var(--text-muted); padding:0 5px;">标注:</span>
+          <button id="label-bilingual" class="seg-btn active" style="padding:4px 8px; font-size:11px;">中英双语</button>
+          <button id="label-zh" class="seg-btn" style="padding:4px 8px; font-size:11px;">仅中文</button>
+          <button id="label-off" class="seg-btn" style="padding:4px 8px; font-size:11px;">隐藏</button>
+        </div>
+
+        <!-- 国家/地区搜索 -->
+        <div class="search-box">
+          <svg class="search-icon" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+          <input id="country-search" class="search-input" type="text" placeholder="搜索国家/地区 (如 墨西哥)..." />
+          <button id="clear-search" class="search-clear" title="清除">×</button>
+          <div id="search-results" class="search-dropdown"></div>
+        </div>
+
+        <!-- 重置视角 -->
+        <button id="btn-reset" class="icon-btn" title="重置全球视角">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+            <path d="M3 3v5h5"></path>
+          </svg>
+          <span>重置</span>
+        </button>
+
+        <!-- 导出高清 PNG -->
+        <button id="btn-export" class="primary-btn" title="导出 2000px 高清 PNG 地图">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>保存高清 PNG</span>
+        </button>
+
+        <!-- 深色/浅色切换 -->
+        <button id="btn-theme" class="icon-btn" title="切换深色/浅色模式">
+          <span id="theme-icon">🌙</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主体内容区 -->
+  <main class="main-grid">
+    <!-- 左侧交互地图容器 -->
+    <section class="map-card">
+      <div class="continent-bar">
+        <div id="continent-tabs" class="continent-tabs"></div>
+        <div class="map-hint">滚轮缩放 · 拖拽平移 · 点击国家或图例锁定次区域</div>
+      </div>
+
+      <div id="map-viewport" class="map-viewport">
+        <svg id="world-map" xmlns="http://www.w3.org/2000/svg"></svg>
+
+        <!-- 非阻塞真实边界数据源状态标签 -->
+        <div id="map-status-pill" class="map-status-pill">
+          <span id="status-dot" class="status-dot"></span>
+          <span id="status-text">正在加载 Natural Earth 110m 真实国界...</span>
+        </div>
+
+        <!-- 左下角缩放按钮 -->
+        <div class="zoom-controls">
+          <button id="zoom-in" class="zoom-btn" title="放大">+</button>
+          <div class="zoom-divider"></div>
+          <button id="zoom-out" class="zoom-btn" title="缩小">−</button>
+          <div class="zoom-divider"></div>
+          <button id="zoom-reset" class="zoom-btn" style="font-size:11px;" title="1:1 复位">1:1</button>
+        </div>
+
+        <!-- 右下角聚焦状态提示 -->
+        <div id="filter-badge" class="filter-badge">
+          <span>当前聚焦：<strong id="filter-badge-name" style="color:#60a5fa;"></strong></span>
+          <button id="clear-filter-btn">显示全部</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 右侧详情卡片与图例列表 -->
+    <aside class="sidebar">
+      <div class="detail-card">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+          <span style="font-size:11px; font-weight:700; color:var(--text-muted); letter-spacing:0.04em;">地区档案卡片</span>
+          <span id="detail-badge" style="font-size:11px; padding:2px 8px; border-radius:99px; background:var(--accent-blue-soft); color:var(--accent-blue); font-weight:600;">点击地图查看</span>
+        </div>
+        <div id="detail-content" style="font-size:12px; color:var(--text-secondary); line-height:1.6;">
+          提示：在<strong>“UN M49 地理次区域”</strong>模式下，墨西哥属于<strong style="color:var(--accent-blue);">中美洲 (Central America)</strong>；切换到<strong>“文化与地缘板块”</strong>模式后，它与南美、加勒比共同构成<strong style="color:#d97706;">拉丁美洲 (LATAM)</strong>。
+        </div>
+      </div>
+
+      <div class="legend-card">
+        <div class="legend-header">
+          <div>
+            <div id="legend-title" style="font-size:13px; font-weight:700;">UN M49 标准次区域 (22个)</div>
+            <div id="legend-sub" style="font-size:11px; color:var(--text-muted);">悬停高亮同区国家，点击锁定并缩放</div>
+          </div>
+          <button id="legend-reset" style="display:none; border:none; background:transparent; color:var(--accent-blue); font-size:12px; font-weight:600; cursor:pointer;">重置</button>
+        </div>
+        <div id="legend-list" class="legend-list"></div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- 悬浮提示框 -->
+  <div id="tooltip" class="tooltip-card">
+    <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border-color); padding-bottom:6px; margin-bottom:7px;">
+      <div>
+        <div id="tt-zh" style="font-size:13px; font-weight:700;">国家</div>
+        <div id="tt-en" style="font-size:11px; color:var(--text-muted);">Country</div>
+      </div>
+      <span id="tt-iso" style="font-size:10px; font-family:monospace; padding:2px 6px; border-radius:5px; background:var(--bg-subtle); color:var(--text-secondary);">ISO</span>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:5px; font-size:11px;">
+      <div style="display:flex; justify-content:space-between; gap:8px;">
+        <span style="color:var(--text-muted);">UN 地理大洲：</span>
+        <span id="tt-cont" style="font-weight:600;">-</span>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+        <span style="color:var(--text-muted);">UN 次区域：</span>
+        <span id="tt-sub" style="font-weight:600; color:#fff; padding:2px 7px; border-radius:5px;">-</span>
+      </div>
+      <div style="display:flex; justify-content:space-between; gap:8px; border-top:1px solid var(--border-color); padding-top:5px;">
+        <span style="color:var(--text-muted);">文化/地缘板块：</span>
+        <span id="tt-cul" style="font-weight:600; color:var(--accent-indigo); text-align:right;">-</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 提示消息框 -->
+  <div id="toast" class="toast"></div>
+
+  <script>
+    /**
+     * =========================================================================
+     * 1. 全局交互状态与五大洲筛选配置
+     * =========================================================================
+     */
+    const state = {
+      mode: "m49",                 // "m49" | "cultural"
+      labelMode: "bilingual",      // "bilingual" | "zh" | "off"
+      selectedContinent: "ALL",    // "ALL" | "亚洲" | "欧洲" | "美洲" | "非洲" | "大洋洲"
+      selectedRegion: null,        // 当前锁定的次区域或文化板块 key
+      hoveredRegion: null,         // 当前悬停高亮的次区域或文化板块 key
+      selectedIso: null,           // 当前选中的国家 ISO3 代码
+      baseWidth: 1200,
+      baseHeight: 620,
+      view: { x: 0, y: 0, k: 1 },
+      isDragging: false,
+      dragStart: { x: 0, y: 0 }
+    };
+
+    const CONTINENTS = [
+      { id: "ALL", label: "全部大洲 (22区)" },
+      { id: "亚洲", label: "亚洲 (5)" },
+      { id: "欧洲", label: "欧洲 (4)" },
+      { id: "美洲", label: "美洲 (4)" },
+      { id: "非洲", label: "非洲 (5)" },
+      { id: "大洋洲", label: "大洋洲 (4)" }
+    ];
+
+    /**
+     * =========================================================================
+     * 2. UN M49 标准 22 个地理次区域 & 11 大文化地缘板块元数据（配色 + 地图标注坐标）
+     * =========================================================================
+     */
+    const SUBREGION_META = {
+      // --- 亚洲 (暖红 / 橙 / 金色系) ---
+      "Eastern Asia":       { zh: "东亚", en: "Eastern Asia", contZh: "亚洲", contEn: "Asia", color: "#dc2626", sample: "中国、日本、韩国、蒙古", coords: [108, 35], offset: [0, 0] },
+      "South-eastern Asia": { zh: "东南亚", en: "South-eastern Asia", contZh: "亚洲", contEn: "Asia", color: "#ea580c", sample: "印尼、泰国、越南、新加坡、菲律宾", coords: [110, 6], offset: [18, 12] },
+      "Southern Asia":      { zh: "南亚", en: "Southern Asia", contZh: "亚洲", contEn: "Asia", color: "#d97706", sample: "印度、巴基斯坦、孟加拉、伊朗", coords: [77, 22], offset: [0, 6] },
+      "Central Asia":       { zh: "中亚", en: "Central Asia", contZh: "亚洲", contEn: "Asia", color: "#f59e0b", sample: "哈萨克斯坦、乌兹别克斯坦等五国", coords: [66, 46], offset: [0, 0] },
+      "Western Asia":       { zh: "西亚", en: "Western Asia", contZh: "亚洲", contEn: "Asia", color: "#b91c1c", sample: "沙特、土耳其、阿联酋、以色列", coords: [45, 27], offset: [0, 4] },
+
+      // --- 欧洲 (靛蓝 / 紫罗兰色系) ---
+      "Northern Europe":    { zh: "北欧", en: "Northern Europe", contZh: "欧洲", contEn: "Europe", color: "#3b82f6", sample: "瑞典、挪威、芬兰、英国、爱尔兰", coords: [15, 62], offset: [-12, -16] },
+      "Western Europe":     { zh: "西欧", en: "Western Europe", contZh: "欧洲", contEn: "Europe", color: "#4f46e5", sample: "法国、德国、荷兰、瑞士、奥地利", coords: [6, 49], offset: [-58, -14] },
+      "Southern Europe":    { zh: "南欧", en: "Southern Europe", contZh: "欧洲", contEn: "Europe", color: "#7c3aed", sample: "意大利、西班牙、葡萄牙、希腊", coords: [12, 41], offset: [-42, 26] },
+      "Eastern Europe":     { zh: "东欧", en: "Eastern Europe", contZh: "欧洲", contEn: "Europe", color: "#2563eb", sample: "俄罗斯、波兰、乌克兰、捷克", coords: [78, 63], offset: [0, 0] },
+
+      // --- 美洲 (青蓝 / 蓝绿色系) ---
+      "Northern America":   { zh: "北美", en: "Northern America", contZh: "美洲", contEn: "Americas", color: "#0284c7", sample: "美国、加拿大、格陵兰", coords: [-100, 48], offset: [0, 0] },
+      "Central America":    { zh: "中美", en: "Central America", contZh: "美洲", contEn: "Americas", color: "#0891b2", sample: "墨西哥、危地马拉、巴拿马", coords: [-96, 18], offset: [-42, 16] },
+      "Caribbean":          { zh: "加勒比地区", en: "Caribbean", contZh: "美洲", contEn: "Americas", color: "#06b6d4", sample: "古巴、牙买加、多米尼加、巴哈马", coords: [-74, 20], offset: [46, -12] },
+      "South America":      { zh: "南美", en: "South America", contZh: "美洲", contEn: "Americas", color: "#0d9488", sample: "巴西、阿根廷、智利、哥伦比亚", coords: [-60, -16], offset: [0, 0] },
+
+      // --- 非洲 (翡翠 / 森林 / 橄榄绿色系) ---
+      "Northern Africa":    { zh: "北非", en: "Northern Africa", contZh: "非洲", contEn: "Africa", color: "#16a34a", sample: "埃及、摩洛哥、阿尔及利亚、利比亚", coords: [16, 26], offset: [0, 0] },
+      "Western Africa":     { zh: "西非", en: "Western Africa", contZh: "非洲", contEn: "Africa", color: "#65a30d", sample: "尼日利亚、加纳、塞内加尔、马里", coords: [-4, 12], offset: [-26, 8] },
+      "Middle Africa":      { zh: "中非", en: "Middle Africa", contZh: "非洲", contEn: "Africa", color: "#15803d", sample: "刚果(金)、喀麦隆、安哥拉、乍得", coords: [20, 2], offset: [0, 4] },
+      "Eastern Africa":     { zh: "东非", en: "Eastern Africa", contZh: "非洲", contEn: "Africa", color: "#059669", sample: "肯尼亚、埃塞俄比亚、坦桑尼亚", coords: [38, -2], offset: [28, 4] },
+      "Southern Africa":    { zh: "南部非洲", en: "Southern Africa", contZh: "非洲", contEn: "Africa", color: "#10b981", sample: "南非、纳米比亚、博茨瓦纳", coords: [24, -27], offset: [0, 6] },
+
+      // --- 大洋洲 (品红 / 玫瑰紫红系) ---
+      "Australasia":        { zh: "澳大拉西亚", en: "Australasia", contZh: "大洋洲", contEn: "Oceania", color: "#db2777", sample: "澳大利亚、新西兰", coords: [134, -26], offset: [0, 0] },
+      "Melanesia":          { zh: "美拉尼西亚", en: "Melanesia", contZh: "大洋洲", contEn: "Oceania", color: "#c026d3", sample: "巴布亚新几内亚、斐济、所罗门群岛", coords: [154, -9], offset: [26, -12] },
+      "Micronesia":         { zh: "密克罗尼西亚", en: "Micronesia", contZh: "大洋洲", contEn: "Oceania", color: "#9333ea", sample: "密联邦、帕劳、马绍尔群岛", coords: [152, 7], offset: [18, -18] },
+      "Polynesia":          { zh: "波利尼西亚", en: "Polynesia", contZh: "大洋洲", contEn: "Oceania", color: "#e11d48", sample: "萨摩亚、汤加、法属波利尼西亚", coords: [-156, -16], offset: [14, 16] }
+    };
+
+    const CULTURAL_META = {
+      "Anglo-America":             { zh: "盎格鲁美洲", en: "Anglo-America", color: "#0284c7", desc: "美洲以英语和盎格鲁-撒克逊文化为主导的地区（美、加、格陵兰）。", coords: [-100, 48], offset: [0, 0] },
+      "Latin America":             { zh: "拉丁美洲", en: "Latin America", color: "#d97706", desc: "跨越地理北美(墨西哥)、中美、加勒比与南美，以西语/葡语为主的文化圈。", coords: [-68, -10], offset: [0, 0] },
+      "Western & Northern Europe": { zh: "西欧与北欧", en: "Western & Northern Europe", color: "#4f46e5", desc: "西欧、北欧与地中海西岸传统发达经济体与欧盟核心文化圈。", coords: [6, 51], offset: [-46, -14] },
+      "Central & Eastern Europe":  { zh: "中东欧与巴尔干", en: "Central & Eastern Europe", color: "#7c3aed", desc: "波兰、捷克、匈牙利、波罗的海三国及巴尔干半岛转型国家。", coords: [20, 48], offset: [16, 18] },
+      "Eurasia / Post-Soviet":     { zh: "后苏联/欧亚空间", en: "Eurasia / Post-Soviet", color: "#2563eb", desc: "横跨东欧、高加索与中亚的原苏联加盟共和国及俄语影响区。", coords: [78, 59], offset: [0, 0] },
+      "MENA":                      { zh: "中东北非", en: "MENA", color: "#059669", desc: "横跨西亚与北非（含伊朗、土耳其、埃及等）的阿拉伯与伊斯兰文化地缘大区。", coords: [28, 27], offset: [0, 0] },
+      "Sub-Saharan Africa":        { zh: "撒哈拉以南非洲", en: "Sub-Saharan Africa", color: "#16a34a", desc: "撒哈拉沙漠以南的西非、中非、东非与南部非洲广大地区。", coords: [21, -5], offset: [0, 0] },
+      "East Asia":                 { zh: "东亚文化圈", en: "East Asia", color: "#dc2626", desc: "深受儒家与汉字文化圈历史影响的中国、日本、韩国、蒙古等。", coords: [108, 35], offset: [0, 0] },
+      "Southeast Asia":            { zh: "东南亚 (东盟)", en: "Southeast Asia", color: "#ea580c", desc: "太平洋与印度洋交汇处的多元文化与东盟经济共同体区域。", coords: [110, 6], offset: [16, 12] },
+      "Indian Subcontinent":       { zh: "南亚次大陆", en: "Indian Subcontinent", color: "#b45309", desc: "喜马拉雅山脉以南以印度、巴基斯坦、孟加拉为主体的独立文化板块。", coords: [78, 22], offset: [0, 4] },
+      "Oceania":                   { zh: "大洋洲与太平洋岛屿", en: "Oceania", color: "#db2777", desc: "澳大利亚、新西兰及太平洋三大群岛地区。", coords: [138, -24], offset: [0, 0] }
+    };
+
+    /**
+     * =========================================================================
+     * 3. 真实地理边界数据 (Natural Earth 110m TopoJSON) 解码与完整 UN M49 映射表
+     * 内置零依赖 TopoJSON 解码器 + 多 CDN 镜像并发竞速，确保真实海岸线与国界秒级渲染
+     * =========================================================================
+     */
+    const ISO_M49_MAP = {
+      // --- 亚洲: 东亚 ---
+      "156": { iso: "CHN", zh: "中国", en: "China", sub: "Eastern Asia", cul: "East Asia" },
+      "158": { iso: "TWN", zh: "中国台湾", en: "Taiwan", sub: "Eastern Asia", cul: "East Asia" },
+      "392": { iso: "JPN", zh: "日本", en: "Japan", sub: "Eastern Asia", cul: "East Asia" },
+      "410": { iso: "KOR", zh: "韩国", en: "South Korea", sub: "Eastern Asia", cul: "East Asia" },
+      "408": { iso: "PRK", zh: "朝鲜", en: "North Korea", sub: "Eastern Asia", cul: "East Asia" },
+      "496": { iso: "MNG", zh: "蒙古", en: "Mongolia", sub: "Eastern Asia", cul: "East Asia" },
+      // --- 亚洲: 东南亚 ---
+      "104": { iso: "MMR", zh: "缅甸", en: "Myanmar", sub: "South-eastern Asia", cul: "Southeast Asia" },
+      "764": { iso: "THA", zh: "泰国", en: "Thailand", sub: "South-eastern Asia", cul: "Southeast Asia" },
+      "418": { iso: "LAO", zh: "老挝", en: "Laos", sub: "South-eastern Asia", cul: "Southeast Asia" },
+      "704": { iso: "VNM", zh: "越南", en: "Vietnam", sub: "South-eastern Asia", cul: "Southeast Asia" },
+      "116": { iso: "KHM", zh: "柬埔寨", en: "Cambodia", sub: "South-eastern Asia", cul: "Southeast Asia" },
+      "458": { iso: "MYS", zh: "马来西亚", en: "Malaysia", sub: "South-eastern Asia", cul: "Southeast Asia" },
+      "096": { iso: "BRN", zh: "文莱", en: "Brunei", sub: "South-eastern Asia", cul: "Southeast Asia" },
+      "702": { iso: "SGP", zh: "新加坡", en: "Singapore", sub: "South-eastern Asia", cul: "Southeast Asia" },
+      "360": { iso: "IDN", zh: "印度尼西亚", en: "Indonesia", sub: "South-eastern Asia", cul: "Southeast Asia" },
+      "626": { iso: "TLS", zh: "东帝汶", en: "Timor-Leste", sub: "South-eastern Asia", cul: "Southeast Asia" },
+      "608": { iso: "PHL", zh: "菲律宾", en: "Philippines", sub: "South-eastern Asia", cul: "Southeast Asia" },
+      // --- 亚洲: 南亚 ---
+      "356": { iso: "IND", zh: "印度", en: "India", sub: "Southern Asia", cul: "Indian Subcontinent" },
+      "586": { iso: "PAK", zh: "巴基斯坦", en: "Pakistan", sub: "Southern Asia", cul: "Indian Subcontinent" },
+      "050": { iso: "BGD", zh: "孟加拉国", en: "Bangladesh", sub: "Southern Asia", cul: "Indian Subcontinent" },
+      "144": { iso: "LKA", zh: "斯里兰卡", en: "Sri Lanka", sub: "Southern Asia", cul: "Indian Subcontinent" },
+      "524": { iso: "NPL", zh: "尼泊尔", en: "Nepal", sub: "Southern Asia", cul: "Indian Subcontinent" },
+      "064": { iso: "BTN", zh: "不丹", en: "Bhutan", sub: "Southern Asia", cul: "Indian Subcontinent" },
+      "004": { iso: "AFG", zh: "阿富汗", en: "Afghanistan", sub: "Southern Asia", cul: "Indian Subcontinent" },
+      "364": { iso: "IRN", zh: "伊朗", en: "Iran", sub: "Southern Asia", cul: "MENA" },
+      // --- 亚洲: 中亚 ---
+      "398": { iso: "KAZ", zh: "哈萨克斯坦", en: "Kazakhstan", sub: "Central Asia", cul: "Eurasia / Post-Soviet" },
+      "860": { iso: "UZB", zh: "乌兹别克斯坦", en: "Uzbekistan", sub: "Central Asia", cul: "Eurasia / Post-Soviet" },
+      "795": { iso: "TKM", zh: "土库曼斯坦", en: "Turkmenistan", sub: "Central Asia", cul: "Eurasia / Post-Soviet" },
+      "417": { iso: "KGZ", zh: "吉尔吉斯斯坦", en: "Kyrgyzstan", sub: "Central Asia", cul: "Eurasia / Post-Soviet" },
+      "762": { iso: "TJK", zh: "塔吉克斯坦", en: "Tajikistan", sub: "Central Asia", cul: "Eurasia / Post-Soviet" },
+      // --- 亚洲: 西亚 ---
+      "792": { iso: "TUR", zh: "土耳其", en: "Turkey", sub: "Western Asia", cul: "MENA" },
+      "682": { iso: "SAU", zh: "沙特阿拉伯", en: "Saudi Arabia", sub: "Western Asia", cul: "MENA" },
+      "368": { iso: "IRQ", zh: "伊拉克", en: "Iraq", sub: "Western Asia", cul: "MENA" },
+      "760": { iso: "SYR", zh: "叙利亚", en: "Syria", sub: "Western Asia", cul: "MENA" },
+      "400": { iso: "JOR", zh: "约旦", en: "Jordan", sub: "Western Asia", cul: "MENA" },
+      "376": { iso: "ISR", zh: "以色列", en: "Israel", sub: "Western Asia", cul: "MENA" },
+      "275": { iso: "PSE", zh: "巴勒斯坦", en: "Palestine", sub: "Western Asia", cul: "MENA" },
+      "422": { iso: "LBN", zh: "黎巴嫩", en: "Lebanon", sub: "Western Asia", cul: "MENA" },
+      "414": { iso: "KWT", zh: "科威特", en: "Kuwait", sub: "Western Asia", cul: "MENA" },
+      "634": { iso: "QAT", zh: "卡塔尔", en: "Qatar", sub: "Western Asia", cul: "MENA" },
+      "784": { iso: "ARE", zh: "阿联酋", en: "United Arab Emirates", sub: "Western Asia", cul: "MENA" },
+      "512": { iso: "OMN", zh: "阿曼", en: "Oman", sub: "Western Asia", cul: "MENA" },
+      "887": { iso: "YEM", zh: "也门", en: "Yemen", sub: "Western Asia", cul: "MENA" },
+      "196": { iso: "CYP", zh: "塞浦路斯", en: "Cyprus", sub: "Western Asia", cul: "MENA" },
+      "268": { iso: "GEO", zh: "格鲁吉亚", en: "Georgia", sub: "Western Asia", cul: "Eurasia / Post-Soviet" },
+      "051": { iso: "ARM", zh: "亚美尼亚", en: "Armenia", sub: "Western Asia", cul: "Eurasia / Post-Soviet" },
+      "031": { iso: "AZE", zh: "阿塞拜疆", en: "Azerbaijan", sub: "Western Asia", cul: "Eurasia / Post-Soviet" },
+      // --- 欧洲: 北欧 ---
+      "352": { iso: "ISL", zh: "冰岛", en: "Iceland", sub: "Northern Europe", cul: "Western & Northern Europe" },
+      "826": { iso: "GBR", zh: "英国", en: "United Kingdom", sub: "Northern Europe", cul: "Western & Northern Europe" },
+      "372": { iso: "IRL", zh: "爱尔兰", en: "Ireland", sub: "Northern Europe", cul: "Western & Northern Europe" },
+      "578": { iso: "NOR", zh: "挪威", en: "Norway", sub: "Northern Europe", cul: "Western & Northern Europe" },
+      "752": { iso: "SWE", zh: "瑞典", en: "Sweden", sub: "Northern Europe", cul: "Western & Northern Europe" },
+      "246": { iso: "FIN", zh: "芬兰", en: "Finland", sub: "Northern Europe", cul: "Western & Northern Europe" },
+      "208": { iso: "DNK", zh: "丹麦", en: "Denmark", sub: "Northern Europe", cul: "Western & Northern Europe" },
+      "233": { iso: "EST", zh: "爱沙尼亚", en: "Estonia", sub: "Northern Europe", cul: "Central & Eastern Europe" },
+      "428": { iso: "LVA", zh: "拉脱维亚", en: "Latvia", sub: "Northern Europe", cul: "Central & Eastern Europe" },
+      "440": { iso: "LTU", zh: "立陶宛", en: "Lithuania", sub: "Northern Europe", cul: "Central & Eastern Europe" },
+      // --- 欧洲: 西欧 ---
+      "250": { iso: "FRA", zh: "法国", en: "France", sub: "Western Europe", cul: "Western & Northern Europe" },
+      "276": { iso: "DEU", zh: "德国", en: "Germany", sub: "Western Europe", cul: "Western & Northern Europe" },
+      "528": { iso: "NLD", zh: "荷兰", en: "Netherlands", sub: "Western Europe", cul: "Western & Northern Europe" },
+      "056": { iso: "BEL", zh: "比利时", en: "Belgium", sub: "Western Europe", cul: "Western & Northern Europe" },
+      "442": { iso: "LUX", zh: "卢森堡", en: "Luxembourg", sub: "Western Europe", cul: "Western & Northern Europe" },
+      "756": { iso: "CHE", zh: "瑞士", en: "Switzerland", sub: "Western Europe", cul: "Western & Northern Europe" },
+      "040": { iso: "AUT", zh: "奥地利", en: "Austria", sub: "Western Europe", cul: "Western & Northern Europe" },
+      // --- 欧洲: 南欧 ---
+      "724": { iso: "ESP", zh: "西班牙", en: "Spain", sub: "Southern Europe", cul: "Western & Northern Europe" },
+      "620": { iso: "PRT", zh: "葡萄牙", en: "Portugal", sub: "Southern Europe", cul: "Western & Northern Europe" },
+      "380": { iso: "ITA", zh: "意大利", en: "Italy", sub: "Southern Europe", cul: "Western & Northern Europe" },
+      "300": { iso: "GRC", zh: "希腊", en: "Greece", sub: "Southern Europe", cul: "Western & Northern Europe" },
+      "705": { iso: "SVN", zh: "斯洛文尼亚", en: "Slovenia", sub: "Southern Europe", cul: "Central & Eastern Europe" },
+      "191": { iso: "HRV", zh: "克罗地亚", en: "Croatia", sub: "Southern Europe", cul: "Central & Eastern Europe" },
+      "070": { iso: "BIH", zh: "波黑", en: "Bosnia and Herzegovina", sub: "Southern Europe", cul: "Central & Eastern Europe" },
+      "688": { iso: "SRB", zh: "塞尔维亚", en: "Serbia", sub: "Southern Europe", cul: "Central & Eastern Europe" },
+      "499": { iso: "MNE", zh: "黑山", en: "Montenegro", sub: "Southern Europe", cul: "Central & Eastern Europe" },
+      "008": { iso: "ALB", zh: "阿尔巴尼亚", en: "Albania", sub: "Southern Europe", cul: "Central & Eastern Europe" },
+      "807": { iso: "MKD", zh: "北马其顿", en: "North Macedonia", sub: "Southern Europe", cul: "Central & Eastern Europe" },
+      // --- 欧洲: 东欧 ---
+      "643": { iso: "RUS", zh: "俄罗斯", en: "Russia", sub: "Eastern Europe", cul: "Eurasia / Post-Soviet" },
+      "804": { iso: "UKR", zh: "乌克兰", en: "Ukraine", sub: "Eastern Europe", cul: "Eurasia / Post-Soviet" },
+      "112": { iso: "BLR", zh: "白俄罗斯", en: "Belarus", sub: "Eastern Europe", cul: "Eurasia / Post-Soviet" },
+      "498": { iso: "MDA", zh: "摩尔多瓦", en: "Moldova", sub: "Eastern Europe", cul: "Eurasia / Post-Soviet" },
+      "616": { iso: "POL", zh: "波兰", en: "Poland", sub: "Eastern Europe", cul: "Central & Eastern Europe" },
+      "203": { iso: "CZE", zh: "捷克", en: "Czechia", sub: "Eastern Europe", cul: "Central & Eastern Europe" },
+      "703": { iso: "SVK", zh: "斯洛伐克", en: "Slovakia", sub: "Eastern Europe", cul: "Central & Eastern Europe" },
+      "348": { iso: "HUN", zh: "匈牙利", en: "Hungary", sub: "Eastern Europe", cul: "Central & Eastern Europe" },
+      "642": { iso: "ROU", zh: "罗马尼亚", en: "Romania", sub: "Eastern Europe", cul: "Central & Eastern Europe" },
+      "100": { iso: "BGR", zh: "保加利亚", en: "Bulgaria", sub: "Eastern Europe", cul: "Central & Eastern Europe" },
+      // --- 美洲: 北美 ---
+      "124": { iso: "CAN", zh: "加拿大", en: "Canada", sub: "Northern America", cul: "Anglo-America" },
+      "840": { iso: "USA", zh: "美国", en: "United States", sub: "Northern America", cul: "Anglo-America" },
+      "304": { iso: "GRL", zh: "格陵兰", en: "Greenland", sub: "Northern America", cul: "Anglo-America" },
+      // --- 美洲: 中美 ---
+      "484": { iso: "MEX", zh: "墨西哥", en: "Mexico", sub: "Central America", cul: "Latin America" },
+      "320": { iso: "GTM", zh: "危地马拉", en: "Guatemala", sub: "Central America", cul: "Latin America" },
+      "084": { iso: "BLZ", zh: "伯利兹", en: "Belize", sub: "Central America", cul: "Latin America" },
+      "340": { iso: "HND", zh: "洪都拉斯", en: "Honduras", sub: "Central America", cul: "Latin America" },
+      "222": { iso: "SLV", zh: "萨尔瓦多", en: "El Salvador", sub: "Central America", cul: "Latin America" },
+      "558": { iso: "NIC", zh: "尼加拉瓜", en: "Nicaragua", sub: "Central America", cul: "Latin America" },
+      "188": { iso: "CRI", zh: "哥斯达黎加", en: "Costa Rica", sub: "Central America", cul: "Latin America" },
+      "591": { iso: "PAN", zh: "巴拿马", en: "Panama", sub: "Central America", cul: "Latin America" },
+      // --- 美洲: 加勒比地区 ---
+      "192": { iso: "CUB", zh: "古巴", en: "Cuba", sub: "Caribbean", cul: "Latin America" },
+      "332": { iso: "HTI", zh: "海地", en: "Haiti", sub: "Caribbean", cul: "Latin America" },
+      "214": { iso: "DOM", zh: "多米尼加", en: "Dominican Republic", sub: "Caribbean", cul: "Latin America" },
+      "388": { iso: "JAM", zh: "牙买加", en: "Jamaica", sub: "Caribbean", cul: "Latin America" },
+      "630": { iso: "PRI", zh: "波多黎各", en: "Puerto Rico", sub: "Caribbean", cul: "Latin America" },
+      "044": { iso: "BHS", zh: "巴哈马", en: "Bahamas", sub: "Caribbean", cul: "Latin America" },
+      "780": { iso: "TTO", zh: "特立尼达和多巴哥", en: "Trinidad and Tobago", sub: "Caribbean", cul: "Latin America" },
+      // --- 美洲: 南美 ---
+      "076": { iso: "BRA", zh: "巴西", en: "Brazil", sub: "South America", cul: "Latin America" },
+      "032": { iso: "ARG", zh: "阿根廷", en: "Argentina", sub: "South America", cul: "Latin America" },
+      "152": { iso: "CHL", zh: "智利", en: "Chile", sub: "South America", cul: "Latin America" },
+      "170": { iso: "COL", zh: "哥伦比亚", en: "Colombia", sub: "South America", cul: "Latin America" },
+      "862": { iso: "VEN", zh: "委内瑞拉", en: "Venezuela", sub: "South America", cul: "Latin America" },
+      "604": { iso: "PER", zh: "秘鲁", en: "Peru", sub: "South America", cul: "Latin America" },
+      "218": { iso: "ECU", zh: "厄瓜多尔", en: "Ecuador", sub: "South America", cul: "Latin America" },
+      "068": { iso: "BOL", zh: "玻利维亚", en: "Bolivia", sub: "South America", cul: "Latin America" },
+      "600": { iso: "PRY", zh: "巴拉圭", en: "Paraguay", sub: "South America", cul: "Latin America" },
+      "858": { iso: "URY", zh: "乌拉圭", en: "Uruguay", sub: "South America", cul: "Latin America" },
+      "328": { iso: "GUY", zh: "圭亚那", en: "Guyana", sub: "South America", cul: "Latin America" },
+      "740": { iso: "SUR", zh: "苏里南", en: "Suriname", sub: "South America", cul: "Latin America" },
+      "238": { iso: "FLK", zh: "福克兰群岛(马尔维纳斯)", en: "Falkland Islands", sub: "South America", cul: "Latin America" },
+      // --- 非洲: 北非 ---
+      "818": { iso: "EGY", zh: "埃及", en: "Egypt", sub: "Northern Africa", cul: "MENA" },
+      "434": { iso: "LBY", zh: "利比亚", en: "Libya", sub: "Northern Africa", cul: "MENA" },
+      "788": { iso: "TUN", zh: "突尼斯", en: "Tunisia", sub: "Northern Africa", cul: "MENA" },
+      "012": { iso: "DZA", zh: "阿尔及利亚", en: "Algeria", sub: "Northern Africa", cul: "MENA" },
+      "504": { iso: "MAR", zh: "摩洛哥", en: "Morocco", sub: "Northern Africa", cul: "MENA" },
+      "732": { iso: "ESH", zh: "西撒哈拉", en: "Western Sahara", sub: "Northern Africa", cul: "MENA" },
+      "729": { iso: "SDN", zh: "苏丹", en: "Sudan", sub: "Northern Africa", cul: "MENA" },
+      // --- 非洲: 西非 ---
+      "478": { iso: "MRT", zh: "毛里塔尼亚", en: "Mauritania", sub: "Western Africa", cul: "Sub-Saharan Africa" },
+      "466": { iso: "MLI", zh: "马里", en: "Mali", sub: "Western Africa", cul: "Sub-Saharan Africa" },
+      "562": { iso: "NER", zh: "尼日尔", en: "Niger", sub: "Western Africa", cul: "Sub-Saharan Africa" },
+      "686": { iso: "SEN", zh: "塞内加尔", en: "Senegal", sub: "Western Africa", cul: "Sub-Saharan Africa" },
+      "270": { iso: "GMB", zh: "冈比亚", en: "Gambia", sub: "Western Africa", cul: "Sub-Saharan Africa" },
+      "624": { iso: "GNB", zh: "几内亚比绍", en: "Guinea-Bissau", sub: "Western Africa", cul: "Sub-Saharan Africa" },
+      "324": { iso: "GIN", zh: "几内亚", en: "Guinea", sub: "Western Africa", cul: "Sub-Saharan Africa" },
+      "694": { iso: "SLE", zh: "塞拉利昂", en: "Sierra Leone", sub: "Western Africa", cul: "Sub-Saharan Africa" },
+      "430": { iso: "LBR", zh: "利比里亚", en: "Liberia", sub: "Western Africa", cul: "Sub-Saharan Africa" },
+      "384": { iso: "CIV", zh: "科特迪瓦", en: "Côte d'Ivoire", sub: "Western Africa", cul: "Sub-Saharan Africa" },
+      "854": { iso: "BFA", zh: "布基纳法索", en: "Burkina Faso", sub: "Western Africa", cul: "Sub-Saharan Africa" },
+      "288": { iso: "GHA", zh: "加纳", en: "Ghana", sub: "Western Africa", cul: "Sub-Saharan Africa" },
+      "768": { iso: "TGO", zh: "多哥", en: "Togo", sub: "Western Africa", cul: "Sub-Saharan Africa" },
+      "204": { iso: "BEN", zh: "贝宁", en: "Benin", sub: "Western Africa", cul: "Sub-Saharan Africa" },
+      "566": { iso: "NGA", zh: "尼日利亚", en: "Nigeria", sub: "Western Africa", cul: "Sub-Saharan Africa" },
+      // --- 非洲: 中非 ---
+      "148": { iso: "TCD", zh: "乍得", en: "Chad", sub: "Middle Africa", cul: "Sub-Saharan Africa" },
+      "120": { iso: "CMR", zh: "喀麦隆", en: "Cameroon", sub: "Middle Africa", cul: "Sub-Saharan Africa" },
+      "140": { iso: "CAF", zh: "中非共和国", en: "Central African Republic", sub: "Middle Africa", cul: "Sub-Saharan Africa" },
+      "226": { iso: "GNQ", zh: "赤道几内亚", en: "Equatorial Guinea", sub: "Middle Africa", cul: "Sub-Saharan Africa" },
+      "266": { iso: "GAB", zh: "加蓬", en: "Gabon", sub: "Middle Africa", cul: "Sub-Saharan Africa" },
+      "178": { iso: "COG", zh: "刚果(布)", en: "Republic of the Congo", sub: "Middle Africa", cul: "Sub-Saharan Africa" },
+      "180": { iso: "COD", zh: "刚果(金)", en: "DR Congo", sub: "Middle Africa", cul: "Sub-Saharan Africa" },
+      "024": { iso: "AGO", zh: "安哥拉", en: "Angola", sub: "Middle Africa", cul: "Sub-Saharan Africa" },
+      // --- 非洲: 东非 ---
+      "728": { iso: "SSD", zh: "南苏丹", en: "South Sudan", sub: "Eastern Africa", cul: "Sub-Saharan Africa" },
+      "232": { iso: "ERI", zh: "厄立特里亚", en: "Eritrea", sub: "Eastern Africa", cul: "Sub-Saharan Africa" },
+      "262": { iso: "DJI", zh: "吉布提", en: "Djibouti", sub: "Eastern Africa", cul: "Sub-Saharan Africa" },
+      "231": { iso: "ETH", zh: "埃塞俄比亚", en: "Ethiopia", sub: "Eastern Africa", cul: "Sub-Saharan Africa" },
+      "706": { iso: "SOM", zh: "索马里", en: "Somalia", sub: "Eastern Africa", cul: "Sub-Saharan Africa" },
+      "404": { iso: "KEN", zh: "肯尼亚", en: "Kenya", sub: "Eastern Africa", cul: "Sub-Saharan Africa" },
+      "800": { iso: "UGA", zh: "乌干达", en: "Uganda", sub: "Eastern Africa", cul: "Sub-Saharan Africa" },
+      "646": { iso: "RWA", zh: "卢旺达", en: "Rwanda", sub: "Eastern Africa", cul: "Sub-Saharan Africa" },
+      "108": { iso: "BDI", zh: "布隆迪", en: "Burundi", sub: "Eastern Africa", cul: "Sub-Saharan Africa" },
+      "834": { iso: "TZA", zh: "坦桑尼亚", en: "Tanzania", sub: "Eastern Africa", cul: "Sub-Saharan Africa" },
+      "894": { iso: "ZMB", zh: "赞比亚", en: "Zambia", sub: "Eastern Africa", cul: "Sub-Saharan Africa" },
+      "454": { iso: "MWI", zh: "马拉维", en: "Malawi", sub: "Eastern Africa", cul: "Sub-Saharan Africa" },
+      "508": { iso: "MOZ", zh: "莫桑比克", en: "Mozambique", sub: "Eastern Africa", cul: "Sub-Saharan Africa" },
+      "716": { iso: "ZWE", zh: "津巴布韦", en: "Zimbabwe", sub: "Eastern Africa", cul: "Sub-Saharan Africa" },
+      "450": { iso: "MDG", zh: "马达加斯加", en: "Madagascar", sub: "Eastern Africa", cul: "Sub-Saharan Africa" },
+      "260": { iso: "ATF", zh: "法属南部领地", en: "French Southern Territories", sub: "Eastern Africa", cul: "Sub-Saharan Africa" },
+      // --- 非洲: 南部非洲 ---
+      "516": { iso: "NAM", zh: "纳米比亚", en: "Namibia", sub: "Southern Africa", cul: "Sub-Saharan Africa" },
+      "072": { iso: "BWA", zh: "博茨瓦纳", en: "Botswana", sub: "Southern Africa", cul: "Sub-Saharan Africa" },
+      "710": { iso: "ZAF", zh: "南非", en: "South Africa", sub: "Southern Africa", cul: "Sub-Saharan Africa" },
+      "426": { iso: "LSO", zh: "莱索托", en: "Lesotho", sub: "Southern Africa", cul: "Sub-Saharan Africa" },
+      "748": { iso: "SWZ", zh: "斯威士兰", en: "Eswatini", sub: "Southern Africa", cul: "Sub-Saharan Africa" },
+      // --- 大洋洲 ---
+      "036": { iso: "AUS", zh: "澳大利亚", en: "Australia", sub: "Australasia", cul: "Oceania" },
+      "554": { iso: "NZL", zh: "新西兰", en: "New Zealand", sub: "Australasia", cul: "Oceania" },
+      "598": { iso: "PNG", zh: "巴布亚新几内亚", en: "Papua New Guinea", sub: "Melanesia", cul: "Oceania" },
+      "090": { iso: "SLB", zh: "所罗门群岛", en: "Solomon Islands", sub: "Melanesia", cul: "Oceania" },
+      "548": { iso: "VUT", zh: "瓦努阿图", en: "Vanuatu", sub: "Melanesia", cul: "Oceania" },
+      "242": { iso: "FJI", zh: "斐济", en: "Fiji", sub: "Melanesia", cul: "Oceania" },
+      "540": { iso: "NCL", zh: "新喀里多尼亚", en: "New Caledonia", sub: "Melanesia", cul: "Oceania" }
+    };
+
+    const NAME_FALLBACK_MAP = {
+      "Somaliland": { iso: "SOL", zh: "索马里兰", en: "Somaliland", sub: "Eastern Africa", cul: "Sub-Saharan Africa" },
+      "Kosovo":     { iso: "XKX", zh: "科索沃", en: "Kosovo", sub: "Southern Europe", cul: "Central & Eastern Europe" },
+      "N. Cyprus":  { iso: "NCY", zh: "北塞浦路斯", en: "Northern Cyprus", sub: "Western Asia", cul: "MENA" },
+      "W. Sahara":  { iso: "ESH", zh: "西撒哈拉", en: "Western Sahara", sub: "Northern Africa", cul: "MENA" }
+    };
+
+    // 太平洋小岛国群（110m 精度下难以显现的密克罗尼西亚与波利尼西亚岛群补充标注）
+    const PACIFIC_ARCHIPELAGO_POLYS = [
+      {
+        iso: "FSM", zh: "密克罗尼西亚群岛 (密联邦/帕劳/马绍尔)", en: "Micronesia", sub: "Micronesia", cul: "Oceania",
+        polys: [
+          [[150.5,6.8],[153.5,7.6],[153.2,6.2],[150.5,6.0],[150.5,6.8]],
+          [[134.1,7.8],[135.4,7.8],[135.4,6.8],[134.1,6.8],[134.1,7.8]],
+          [[168.5,8.2],[171.5,8.2],[171.5,6.5],[168.5,6.5],[168.5,8.2]]
+        ]
+      },
+      {
+        iso: "PYF", zh: "波利尼西亚群岛 (萨摩亚/汤加/塔希提)", en: "Polynesia", sub: "Polynesia", cul: "Oceania",
+        polys: [
+          [[-150.2,-16.8],[-148.2,-17.8],[-149.8,-18.4],[-150.2,-16.8]],
+          [[-173.2,-13.4],[-171.2,-13.8],[-171.8,-14.6],[-173.2,-13.4]],
+          [[-175.8,-20.5],[-174.2,-21.4],[-175.6,-21.8],[-175.8,-20.5]]
+        ]
+      }
+    ];
+
+    let WORLD_GEO_DATA = [];
+
+    /**
+     * 自包含 TopoJSON 解码器 (无需外部 topojson-client 脚本依赖)
+     */
+    function decodeTopoJson(topology, objectName) {
+      const { scale = [1, 1], translate = [0, 0] } = topology.transform || {};
+      const decodedArcs = topology.arcs.map(arc => {
+        let x = 0, y = 0;
+        return arc.map(pt => {
+          x += pt[0];
+          y += pt[1];
+          return [x * scale[0] + translate[0], y * scale[1] + translate[1]];
+        });
+      });
+
+      function decodeRing(arcIndices) {
+        const ring = [];
+        arcIndices.forEach((idx, segPos) => {
+          const arc = idx >= 0 ? decodedArcs[idx] : [...decodedArcs[~idx]].reverse();
+          if (!arc) return;
+          for (let i = segPos === 0 ? 0 : 1; i < arc.length; i++) {
+            ring.push(arc[i]);
+          }
+        });
+        return ring;
+      }
+
+      const geoms = topology.objects[objectName]?.geometries || [];
+      return geoms.map(g => {
+        const polys = [];
+        if (g.type === "Polygon") {
+          g.arcs.forEach(ringIdx => polys.push(decodeRing(ringIdx)));
+        } else if (g.type === "MultiPolygon") {
+          g.arcs.forEach(poly => {
+            poly.forEach(ringIdx => polys.push(decodeRing(ringIdx)));
+          });
+        }
+        return { id: g.id, properties: g.properties || {}, polys };
+      });
+    }
+
+    /**
+     * 跨越 ±180° 国际日期变更线的多边形精确裁剪（Sutherland-Hodgman 算法）
+     * 解决俄罗斯远东、斐济、阿留申群岛等跨日界线区域出现斜向拉丝与边界错位的问题
+     */
+    function clipRingAntimeridian(ring) {
+      if (!ring || ring.length < 3) return [];
+
+      // 1. 去除首尾重复闭合点，便于连续解包与半平面裁剪
+      let len = ring.length;
+      if (len > 1 && ring[0][0] === ring[len - 1][0] && ring[0][1] === ring[len - 1][1]) {
+        len -= 1;
+      }
+      if (len < 3) return [];
+
+      // 2. 连续经度解包（消除相邻点 >180° 的经度跳变）
+      const unwrapped = [[ring[0][0], ring[0][1]]];
+      let minLon = ring[0][0];
+      let maxLon = ring[0][0];
+      for (let i = 1; i < len; i++) {
+        let lon = ring[i][0];
+        const lat = ring[i][1];
+        const prevLon = unwrapped[i - 1][0];
+        while (lon - prevLon > 180) lon -= 360;
+        while (lon - prevLon < -180) lon += 360;
+        unwrapped.push([lon, lat]);
+        if (lon < minLon) minLon = lon;
+        if (lon > maxLon) maxLon = lon;
+      }
+
+      // 未跨越 ±180° 边界的普通多边形直接返回闭合环
+      if (minLon >= -180 && maxLon <= 180) {
+        unwrapped.push(unwrapped[0]);
+        return [unwrapped];
+      }
+
+      // 3. 沿 360° 经度条带进行 Sutherland-Hodgman 半平面精确裁剪
+      const intersectX = (p1, p2, xBound) => {
+        const dx = p2[0] - p1[0];
+        if (Math.abs(dx) < 1e-12) return [xBound, p1[1]];
+        const t = (xBound - p1[0]) / dx;
+        return [xBound, p1[1] + t * (p2[1] - p1[1])];
+      };
+
+      const clipHalf = (pts, isInside, xBound) => {
+        if (pts.length < 3) return [];
+        const out = [];
+        let prev = pts[pts.length - 1];
+        let prevIn = isInside(prev[0]);
+        for (let i = 0; i < pts.length; i++) {
+          const curr = pts[i];
+          const currIn = isInside(curr[0]);
+          if (currIn) {
+            if (!prevIn) out.push(intersectX(prev, curr, xBound));
+            out.push(curr);
+          } else if (prevIn) {
+            out.push(intersectX(prev, curr, xBound));
+          }
+          prev = curr;
+          prevIn = currIn;
+        }
+        return out;
+      };
+
+      const result = [];
+      const minStrip = Math.floor((minLon + 180) / 360);
+      const maxStrip = Math.floor((maxLon + 180) / 360);
+
+      for (let s = minStrip; s <= maxStrip; s++) {
+        const left = s * 360 - 180;
+        const right = s * 360 + 180;
+        let clipped = clipHalf(unwrapped, x => x >= left, left);
+        clipped = clipHalf(clipped, x => x <= right, right);
+        if (clipped.length >= 3) {
+          const shift = s * 360;
+          const normalized = clipped.map(([x, y]) => [
+            Math.max(-180, Math.min(180, x - shift)),
+            y
+          ]);
+          normalized.push(normalized[0]);
+          result.push(normalized);
+        }
+      }
+      return result;
+    }
+
+    /**
+     * 多 CDN 镜像并发竞速拉取 Natural Earth 110m 真实世界地理边界
+     */
+    async function loadRealWorldData() {
+      const mirrors = [
+        "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
+        "https://fastly.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
+        "https://unpkg.com/world-atlas@2.0.2/countries-110m.json",
+        "https://gcore.jsdelivr.net/npm/world-atlas@2/countries-110m.json"
+      ];
+
+      const fetchMirror = (url) => new Promise((resolve, reject) => {
+        const ctrl = new AbortController();
+        const timer = setTimeout(() => { ctrl.abort(); reject(new Error("timeout")); }, 9000);
+        fetch(url, { signal: ctrl.signal, mode: "cors" })
+          .then(res => {
+            clearTimeout(timer);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return res.json();
+          })
+          .then(resolve)
+          .catch(err => { clearTimeout(timer); reject(err); });
+      });
+
+      const topology = await Promise.any(mirrors.map(fetchMirror));
+      const features = decodeTopoJson(topology, "countries");
+
+      const parsed = [];
+      features.forEach(f => {
+        const idStr = f.id != null ? String(f.id).padStart(3, "0") : "";
+        if (idStr === "010") return; // 排除南极洲，聚焦有人类居住的五大洲
+
+        const meta = ISO_M49_MAP[idStr] || NAME_FALLBACK_MAP[f.properties.name];
+        if (!meta) return;
+
+        // 对所有多边形环执行 ±180° 国际日期变更线精确裁剪，防止拉丝与错位
+        const validPolys = [];
+        f.polys.forEach(r => {
+          const clippedRings = clipRingAntimeridian(r);
+          clippedRings.forEach(cr => {
+            if (cr.length >= 4) validPolys.push(cr);
+          });
+        });
+        if (validPolys.length === 0) return;
+
+        parsed.push({
+          iso: meta.iso,
+          zh: meta.zh,
+          en: meta.en,
+          sub: meta.sub,
+          cul: meta.cul,
+          polys: validPolys
+        });
+      });
+
+      // 补充太平洋小岛群（密克罗尼西亚、波利尼西亚）
+      PACIFIC_ARCHIPELAGO_POLYS.forEach(p => parsed.push(p));
+      return parsed;
+    }
+
+    /**
+     * =========================================================================
+     * 4. Natural Earth I 精确地图投影、工具函数与 SVG 地图初始化构建
+     * =========================================================================
+     */
+    const NE_A0 = 0.870700, NE_A1 = -0.131979, NE_A2 = -0.013791, NE_A3 = 0.003971, NE_A4 = -0.001529;
+    const NE_B0 = 1.007226, NE_B1 = 0.015085, NE_B2 = -0.044475, NE_B3 = 0.028874, NE_B4 = -0.005916;
+
+    function projectLonLat(lon, lat) {
+      const clampedLat = Math.max(-60, Math.min(84, lat));
+      const lam = (lon * Math.PI) / 180;
+      const phi = (clampedLat * Math.PI) / 180;
+      const phi2 = phi * phi;
+      const phi4 = phi2 * phi2;
+      const xNorm = lam * (NE_A0 + phi2 * (NE_A1 + phi2 * (NE_A2 + phi4 * (NE_A3 + phi2 * NE_A4))));
+      const yNorm = phi * (NE_B0 + phi2 * (NE_B1 + phi4 * (NE_B2 + phi2 * (NE_B3 + phi2 * NE_B4))));
+      const scale = 212;
+      const x = state.baseWidth * 0.5 + xNorm * scale;
+      const y = state.baseHeight * 0.555 - yNorm * scale;
+      return [x, y];
+    }
+
+    function polyToSvgPath(polys) {
+      return polys.map(ring => {
+        if (!ring || ring.length < 3) return "";
+        const cmds = [];
+        for (let i = 0; i < ring.length; i++) {
+          const [lon, lat] = ring[i];
+          const [px, py] = projectLonLat(lon, lat);
+          cmds.push(`${i === 0 ? "M" : "L"}${px.toFixed(1)},${py.toFixed(1)}`);
+        }
+        return cmds.join(" ") + " Z";
+      }).join(" ");
+    }
+
+    function createSvgEl(tag, attrs = {}) {
+      const el = document.createElementNS("http://www.w3.org/2000/svg", tag);
+      Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
+      return el;
+    }
+
+    function getCountryGroupKey(c) {
+      return state.mode === "m49" ? c.sub : c.cul;
+    }
+
+    function getCountryColor(c) {
+      if (state.mode === "m49") {
+        return SUBREGION_META[c.sub]?.color || "#64748b";
+      }
+      return CULTURAL_META[c.cul]?.color || "#64748b";
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById("toast");
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.style.display = "block";
+      clearTimeout(toast._timer);
+      toast._timer = setTimeout(() => {
+        toast.style.display = "none";
+      }, 2600);
+    }
+
+    function buildMap() {
+      const svg = document.getElementById("world-map");
+      if (!svg) return;
+      svg.setAttribute("viewBox", `0 0 ${state.baseWidth} ${state.baseHeight}`);
+      svg.innerHTML = "";
+
+      const rootG = createSvgEl("g", { id: "map-root-g" });
+      svg.appendChild(rootG);
+
+      // 1. 海洋背景层
+      rootG.appendChild(createSvgEl("rect", {
+        id: "ocean-rect",
+        x: 0,
+        y: 0,
+        width: state.baseWidth,
+        height: state.baseHeight,
+        fill: "var(--bg-ocean)"
+      }));
+
+      // 2. 经纬网与地球外框层
+      const gratG = createSvgEl("g", { id: "graticule-layer", opacity: "0.28" });
+      for (let lon = -180; lon <= 180; lon += 30) {
+        const pts = [];
+        for (let lat = -60; lat <= 84; lat += 4) {
+          const [x, y] = projectLonLat(lon, lat);
+          pts.push(`${lat === -60 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`);
+        }
+        gratG.appendChild(createSvgEl("path", {
+          d: pts.join(" "),
+          fill: "none",
+          stroke: "#94a3b8",
+          "stroke-width": Math.abs(lon) === 180 ? "1.1" : "0.6"
+        }));
+      }
+      for (let lat = -60; lat <= 80; lat += 20) {
+        const pts = [];
+        for (let lon = -180; lon <= 180; lon += 10) {
+          const [x, y] = projectLonLat(lon, lat);
+          pts.push(`${lon === -180 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`);
+        }
+        gratG.appendChild(createSvgEl("path", {
+          d: pts.join(" "),
+          fill: "none",
+          stroke: "#94a3b8",
+          "stroke-width": lat === 0 ? "1.0" : "0.6",
+          "stroke-dasharray": lat === 0 ? "4,3" : "none"
+        }));
+      }
+      rootG.appendChild(gratG);
+
+      // 3. 真实国家与地区多边形层
+      const countriesG = createSvgEl("g", { id: "countries-layer" });
+      WORLD_GEO_DATA.forEach(c => {
+        // 预计算投影包围盒（若国家横跨日界线或有远洋海外省，则取主本土最大环包围盒）
+        const computeRingsBBox = (rings) => {
+          let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+          rings.forEach(ring => {
+            ring.forEach(pt => {
+              const [px, py] = projectLonLat(pt[0], pt[1]);
+              if (px < x0) x0 = px;
+              if (py < y0) y0 = py;
+              if (px > x1) x1 = px;
+              if (py > y1) y1 = py;
+            });
+          });
+          return [x0, y0, x1, y1];
+        };
+
+        let bbox = computeRingsBBox(c.polys);
+        if (bbox[2] - bbox[0] > state.baseWidth * 0.65 && c.polys.length > 1) {
+          const mainRing = c.polys.reduce((a, b) => (b.length > a.length ? b : a), c.polys[0]);
+          bbox = computeRingsBBox([mainRing]);
+        }
+        c._bbox = bbox;
+
+        const path = createSvgEl("path", {
+          d: polyToSvgPath(c.polys),
+          class: "country-shape",
+          "data-iso": c.iso,
+          fill: getCountryColor(c),
+          "fill-rule": "evenodd",
+          stroke: "var(--country-stroke)",
+          "stroke-width": "0.55",
+          "stroke-linejoin": "round"
+        });
+
+        path.addEventListener("mouseenter", (e) => onCountryHover(e, c));
+        path.addEventListener("mousemove", onCountryMove);
+        path.addEventListener("mouseleave", onCountryLeave);
+        path.addEventListener("click", (e) => onCountryClick(e, c));
+
+        countriesG.appendChild(path);
+      });
+      rootG.appendChild(countriesG);
+
+      // 4. 次区域与文化板块外轮廓描边层 (高亮时加粗描边)
+      const outlinesG = createSvgEl("g", { id: "outlines-layer" });
+      rootG.appendChild(outlinesG);
+
+      // 5. 次区域文字标注层（始终位于国家边界之上）
+      const labelsG = createSvgEl("g", { id: "labels-layer" });
+      rootG.appendChild(labelsG);
+
+      renderMapLabels();
+      updateMapStyles();
+    }
+
+    /**
+     * =========================================================================
+     * 6. 渲染地图表面的次区域/板块文字标注 (含牵引线与防重叠)
+     * =========================================================================
+     */
+    function renderMapLabels() {
+      const labelsG = document.getElementById("labels-layer");
+      if (!labelsG) return;
+      labelsG.innerHTML = "";
+
+      if (state.labelMode === "off") return;
+
+      const entries = state.mode === "m49"
+        ? Object.entries(SUBREGION_META).map(([key, m]) => ({
+            key, zh: m.zh, en: m.en, contZh: m.contZh, coords: m.coords, offset: m.offset || [0, 0]
+          }))
+        : Object.entries(CULTURAL_META).map(([key, m]) => ({
+            key, zh: m.zh, en: m.en, contZh: "ALL", coords: m.coords, offset: m.offset || [0, 0]
+          }));
+
+      entries.forEach(item => {
+        const [px, py] = projectLonLat(item.coords[0], item.coords[1]);
+        const [ox, oy] = item.offset;
+
+        const g = createSvgEl("g", {
+          class: "region-label-group",
+          "data-region": item.key,
+          transform: `translate(${(px + ox).toFixed(1)}, ${(py + oy).toFixed(1)})`
+        });
+
+        // 紧凑区域（西欧、南欧、中美、加勒比、太平洋岛群等）绘制牵引线与锚点
+        if (ox !== 0 || oy !== 0) {
+          g.appendChild(createSvgEl("line", {
+            class: "label-leader",
+            x1: -ox,
+            y1: -oy,
+            x2: ox > 0 ? -8 : (ox < 0 ? 8 : 0),
+            y2: oy > 0 ? -9 : (oy < 0 ? 7 : 0),
+            stroke: "var(--leader-stroke)",
+            "stroke-width": "1.1",
+            "stroke-dasharray": "2.5,2"
+          }));
+
+          g.appendChild(createSvgEl("circle", {
+            cx: -ox,
+            cy: -oy,
+            r: "2.4",
+            fill: "var(--label-text)",
+            stroke: "var(--label-halo)",
+            "stroke-width": "1"
+          }));
+        }
+
+        const textWrap = createSvgEl("g", { class: "label-text-wrap" });
+
+        const titleEl = createSvgEl("text", {
+          class: "region-label-title",
+          "text-anchor": "middle",
+          "dominant-baseline": "central",
+          y: state.labelMode === "bilingual" ? "-5.5" : "0",
+          fill: "var(--label-text)",
+          stroke: "var(--label-halo)",
+          "stroke-width": "3.8"
+        });
+        titleEl.textContent = item.zh;
+        textWrap.appendChild(titleEl);
+
+        if (state.labelMode === "bilingual") {
+          const subEl = createSvgEl("text", {
+            class: "region-label-sub",
+            "text-anchor": "middle",
+            "dominant-baseline": "central",
+            y: "7.5",
+            fill: "var(--label-sub)",
+            stroke: "var(--label-halo)",
+            "stroke-width": "3.2"
+          });
+          subEl.textContent = item.en;
+          textWrap.appendChild(subEl);
+        }
+
+        g.appendChild(textWrap);
+        labelsG.appendChild(g);
+      });
+
+      applyZoomTransform();
+      updateMapStyles();
+    }
+
+    /**
+     * =========================================================================
+     * 7. 更新地图样式、高亮过滤与平滑缩放居中
+     * =========================================================================
+     */
+    function updateMapStyles() {
+      const shapes = document.querySelectorAll(".country-shape");
+      shapes.forEach(el => {
+        const iso = el.getAttribute("data-iso");
+        const c = WORLD_GEO_DATA.find(item => item.iso === iso);
+        if (!c) return;
+
+        const groupKey = getCountryGroupKey(c);
+        const contZh = SUBREGION_META[c.sub]?.contZh || "";
+
+        el.setAttribute("fill", getCountryColor(c));
+
+        let opacity = 0.94;
+        if (state.hoveredRegion) {
+          opacity = groupKey === state.hoveredRegion ? 1 : 0.22;
+        } else if (state.selectedRegion) {
+          opacity = groupKey === state.selectedRegion ? 1 : 0.16;
+        } else if (state.mode === "m49" && state.selectedContinent !== "ALL") {
+          opacity = contZh === state.selectedContinent ? 1 : 0.15;
+        }
+        el.setAttribute("fill-opacity", opacity);
+
+        if (state.selectedIso === iso) {
+          el.setAttribute("stroke", "#facc15");
+          el.setAttribute("stroke-width", (1.8 / Math.sqrt(state.view.k)).toFixed(2));
+        } else {
+          el.setAttribute("stroke", "var(--country-stroke)");
+          el.setAttribute("stroke-width", Math.max(0.22, 0.65 / Math.sqrt(state.view.k)).toFixed(2));
+        }
+      });
+
+      // 绘制当前悬停或锁定次区域的加粗外边框轮廓
+      const outlinesG = document.getElementById("outlines-layer");
+      if (outlinesG) {
+        outlinesG.innerHTML = "";
+        const activeRegion = state.hoveredRegion || state.selectedRegion;
+        if (activeRegion) {
+          const isDark = document.documentElement.classList.contains("dark");
+          const strokeColor = isDark ? "#f8fafc" : "#0f172a";
+          WORLD_GEO_DATA.filter(c => getCountryGroupKey(c) === activeRegion).forEach(c => {
+            outlinesG.appendChild(createSvgEl("path", {
+              d: polyToSvgPath(c.polys),
+              class: "subregion-outline",
+              "fill-rule": "evenodd",
+              stroke: strokeColor,
+              "stroke-opacity": "0.45",
+              "stroke-width": Math.max(0.45, 1.35 / Math.sqrt(state.view.k)).toFixed(2)
+            }));
+          });
+        }
+      }
+
+      // 更新地图表面标注透明度与字号高亮
+      const labelGroups = document.querySelectorAll(".region-label-group");
+      labelGroups.forEach(g => {
+        const key = g.getAttribute("data-region");
+        const meta = state.mode === "m49" ? SUBREGION_META[key] : CULTURAL_META[key];
+
+        let op = 1;
+        if (state.labelMode === "off") op = 0;
+        else if (state.hoveredRegion) op = key === state.hoveredRegion ? 1 : 0.2;
+        else if (state.selectedRegion) op = key === state.selectedRegion ? 1 : 0.15;
+        else if (state.mode === "m49" && state.selectedContinent !== "ALL") {
+          op = meta && meta.contZh === state.selectedContinent ? 1 : 0.12;
+        }
+        g.style.opacity = op;
+
+        const isActive = key === state.hoveredRegion || key === state.selectedRegion;
+        const titleEl = g.querySelector(".region-label-title");
+        const subEl = g.querySelector(".region-label-sub");
+        if (titleEl) {
+          titleEl.setAttribute("font-size", isActive ? "14px" : (state.mode === "cultural" ? "12.5px" : "11.5px"));
+        }
+        if (subEl) {
+          subEl.setAttribute("font-size", isActive ? "9.5px" : "8.2px");
+        }
+      });
+
+      // 更新右下角聚焦提示徽章
+      const badge = document.getElementById("filter-badge");
+      const badgeName = document.getElementById("filter-badge-name");
+      if (state.selectedRegion) {
+        const label = state.mode === "m49"
+          ? `${SUBREGION_META[state.selectedRegion]?.zh} (${state.selectedRegion})`
+          : `${CULTURAL_META[state.selectedRegion]?.zh} (${CULTURAL_META[state.selectedRegion]?.en})`;
+        badgeName.textContent = label;
+        badge.style.display = "flex";
+      } else if (state.mode === "m49" && state.selectedContinent !== "ALL") {
+        badgeName.textContent = state.selectedContinent;
+        badge.style.display = "flex";
+      } else {
+        badge.style.display = "none";
+      }
+    }
+
+    function applyZoomTransform() {
+      const rootG = document.getElementById("map-root-g");
+      if (!rootG) return;
+      rootG.setAttribute("transform", `translate(${state.view.x.toFixed(1)}, ${state.view.y.toFixed(1)}) scale(${state.view.k.toFixed(3)})`);
+
+      // 放大时反向微调文字缩放，保持清晰不遮挡
+      const invTextScale = 1 / Math.pow(state.view.k, 0.56);
+      document.querySelectorAll(".label-text-wrap").forEach(w => {
+        w.setAttribute("transform", `scale(${invTextScale.toFixed(3)})`);
+      });
+
+      updateMapStyles();
+    }
+
+    function animateViewTo(targetX, targetY, targetK, duration = 450) {
+      const startX = state.view.x;
+      const startY = state.view.y;
+      const startK = state.view.k;
+      const t0 = performance.now();
+
+      function step(now) {
+        const p = Math.min(1, (now - t0) / duration);
+        const ease = 1 - Math.pow(1 - p, 3); // cubic ease-out
+        state.view.x = startX + (targetX - startX) * ease;
+        state.view.y = startY + (targetY - startY) * ease;
+        state.view.k = startK + (targetK - startK) * ease;
+        applyZoomTransform();
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    function zoomToCountries(countries, maxK = 4.2) {
+      if (!countries || countries.length === 0) {
+        animateViewTo(0, 0, 1);
+        return;
+      }
+      let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+      countries.forEach(c => {
+        const [x0, y0, x1, y1] = c._bbox;
+        if (x0 < minX) minX = x0;
+        if (y0 < minY) minY = y0;
+        if (x1 > maxX) maxX = x1;
+        if (y1 > maxY) maxY = y1;
+      });
+      const dx = Math.max(40, maxX - minX);
+      const dy = Math.max(40, maxY - minY);
+      const cx = (minX + maxX) / 2;
+      const cy = (minY + maxY) / 2;
+
+      const k = Math.max(1.15, Math.min(maxK, 0.68 / Math.max(dx / state.baseWidth, dy / state.baseHeight)));
+      const tx = state.baseWidth / 2 - k * cx;
+      const ty = state.baseHeight / 2 - k * cy;
+      animateViewTo(tx, ty, k);
+    }
+
+    function resetAll(shouldZoom = true) {
+      state.selectedContinent = "ALL";
+      state.selectedRegion = null;
+      state.hoveredRegion = null;
+      state.selectedIso = null;
+      renderContinentTabs();
+      renderLegend();
+      updateMapStyles();
+      if (shouldZoom) animateViewTo(0, 0, 1);
+    }
+
+    /**
+     * =========================================================================
+     * 8. 悬停、点击、拖拽平移与滚轮缩放交互
+     * =========================================================================
+     */
+    function onCountryHover(e, c) {
+      state.hoveredRegion = getCountryGroupKey(c);
+      updateMapStyles();
+
+      const subMeta = SUBREGION_META[c.sub];
+      const culMeta = CULTURAL_META[c.cul];
+      const tt = document.getElementById("tooltip");
+
+      document.getElementById("tt-zh").textContent = c.zh;
+      document.getElementById("tt-en").textContent = c.en;
+      document.getElementById("tt-iso").textContent = c.iso;
+      document.getElementById("tt-cont").textContent = `${subMeta.contZh} (${subMeta.contEn})`;
+
+      const subEl = document.getElementById("tt-sub");
+      subEl.textContent = `${subMeta.zh} · ${subMeta.en}`;
+      subEl.style.backgroundColor = subMeta.color;
+
+      document.getElementById("tt-cul").textContent = `${culMeta.zh} (${culMeta.en})`;
+      tt.style.display = "block";
+    }
+
+    function onCountryMove(e) {
+      const tt = document.getElementById("tooltip");
+      const pad = 14;
+      let left = e.clientX + pad;
+      let top = e.clientY + pad;
+      const rect = tt.getBoundingClientRect();
+      if (left + rect.width > window.innerWidth - 10) left = e.clientX - rect.width - pad;
+      if (top + rect.height > window.innerHeight - 10) top = e.clientY - rect.height - pad;
+      tt.style.left = `${left}px`;
+      tt.style.top = `${top}px`;
+    }
+
+    function onCountryLeave() {
+      state.hoveredRegion = null;
+      updateMapStyles();
+      document.getElementById("tooltip").style.display = "none";
+    }
+
+    function onCountryClick(e, c) {
+      e.stopPropagation();
+      state.selectedIso = c.iso;
+
+      const subMeta = SUBREGION_META[c.sub];
+      const culMeta = CULTURAL_META[c.cul];
+
+      // 更新右侧档案卡
+      document.getElementById("detail-badge").textContent = `${subMeta.contZh} · ${c.iso}`;
+      document.getElementById("detail-content").innerHTML = `
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+          <div>
+            <div style="font-size:15px; font-weight:700; color:var(--text-primary);">${c.zh}</div>
+            <div style="font-size:11px; color:var(--text-muted);">${c.en}</div>
+          </div>
+          <span style="padding:4px 9px; border-radius:8px; font-size:11px; font-weight:700; color:#fff; background:${subMeta.color};">${subMeta.zh}</span>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; background:var(--bg-subtle); padding:9px; border-radius:10px; border:1px solid var(--border-color); font-size:11px;">
+          <div>
+            <div style="color:var(--text-muted);">UN 地理大洲</div>
+            <div style="font-weight:700; color:var(--text-primary);">${subMeta.contZh} (${subMeta.contEn})</div>
+          </div>
+          <div>
+            <div style="color:var(--text-muted);">UN M49 次区域</div>
+            <div style="font-weight:700; color:var(--text-primary);">${subMeta.zh} (${subMeta.en})</div>
+          </div>
+          <div style="grid-column:span 2; border-top:1px solid var(--border-color); padding-top:6px;">
+            <div style="color:var(--text-muted);">文化与地缘板块</div>
+            <div style="font-weight:700; color:var(--accent-indigo);">${culMeta.zh} (${culMeta.en})</div>
+            <div style="color:var(--text-secondary); margin-top:2px;">${culMeta.desc}</div>
+          </div>
+        </div>
+      `;
+
+      // 锁定所属次区域并缩放居中
+      const groupKey = getCountryGroupKey(c);
+      state.selectedRegion = groupKey;
+      if (state.mode === "m49") {
+        state.selectedContinent = subMeta.contZh;
+        renderContinentTabs();
+      }
+      renderLegend();
+      updateMapStyles();
+
+      const matched = WORLD_GEO_DATA.filter(item => getCountryGroupKey(item) === groupKey);
+      zoomToCountries(matched, 3.8);
+    }
+
+    function initPanAndZoom() {
+      const viewport = document.getElementById("map-viewport");
+      const svg = document.getElementById("world-map");
+
+      viewport.addEventListener("wheel", (e) => {
+        e.preventDefault();
+        const rect = svg.getBoundingClientRect();
+        const scaleX = state.baseWidth / rect.width;
+        const scaleY = state.baseHeight / rect.height;
+        const mx = (e.clientX - rect.left) * scaleX;
+        const my = (e.clientY - rect.top) * scaleY;
+
+        const factor = e.deltaY < 0 ? 1.25 : 0.8;
+        const nextK = Math.max(1, Math.min(10, state.view.k * factor));
+        const ratio = nextK / state.view.k;
+
+        state.view.x = mx - (mx - state.view.x) * ratio;
+        state.view.y = my - (my - state.view.y) * ratio;
+        state.view.k = nextK;
+        if (nextK === 1) { state.view.x = 0; state.view.y = 0; }
+        applyZoomTransform();
+      }, { passive: false });
+
+      viewport.addEventListener("mousedown", (e) => {
+        if (e.target.closest(".zoom-controls") || e.target.closest(".filter-badge")) return;
+        state.isDragging = true;
+        state.dragStart = { x: e.clientX, y: e.clientY };
+      });
+
+      window.addEventListener("mousemove", (e) => {
+        if (!state.isDragging) return;
+        const rect = svg.getBoundingClientRect();
+        const dx = (e.clientX - state.dragStart.x) * (state.baseWidth / rect.width);
+        const dy = (e.clientY - state.dragStart.y) * (state.baseHeight / rect.height);
+        state.dragStart = { x: e.clientX, y: e.clientY };
+        state.view.x += dx;
+        state.view.y += dy;
+        applyZoomTransform();
+      });
+
+      window.addEventListener("mouseup", () => {
+        state.isDragging = false;
+      });
+    }
+
+    /**
+     * =========================================================================
+     * 9. 渲染大洲筛选标签栏与右侧图例
+     * =========================================================================
+     */
+    function renderContinentTabs() {
+      const container = document.getElementById("continent-tabs");
+      if (state.mode === "cultural") {
+        container.innerHTML = `
+          <div style="font-size:12px; color:#b45309; background:rgba(245,158,11,0.12); padding:4px 10px; border-radius:8px; border:1px solid rgba(245,158,11,0.3);">
+            <strong>💡 跨洲文化对比：</strong>观察“拉丁美洲”如何跨越北美(墨西哥)、中美、加勒比与南美；“MENA”如何横跨西亚与北非。
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = CONTINENTS.map(c => `
+        <button class="cont-btn ${state.selectedContinent === c.id ? "active" : ""}" data-cont="${c.id}">
+          ${c.label}
+        </button>
+      `).join("");
+
+      container.querySelectorAll(".cont-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const cont = btn.dataset.cont;
+          state.selectedContinent = cont;
+          state.selectedRegion = null;
+          renderContinentTabs();
+          renderLegend();
+          updateMapStyles();
+
+          if (cont === "ALL") {
+            animateViewTo(0, 0, 1);
+          } else {
+            const matched = WORLD_GEO_DATA.filter(item => SUBREGION_META[item.sub]?.contZh === cont);
+            zoomToCountries(matched, 3.0);
+          }
+        });
+      });
+    }
+
+    function renderLegend() {
+      const listEl = document.getElementById("legend-list");
+      const titleEl = document.getElementById("legend-title");
+      const subEl = document.getElementById("legend-sub");
+      const resetBtn = document.getElementById("legend-reset");
+
+      resetBtn.style.display = (state.selectedRegion || state.selectedContinent !== "ALL") ? "inline-block" : "none";
+
+      if (state.mode === "m49") {
+        titleEl.textContent = state.selectedContinent === "ALL"
+          ? "UN M49 标准次区域 (22个)"
+          : `${state.selectedContinent} · 下辖次区域`;
+        subEl.textContent = "悬停高亮同区国家，点击锁定并缩放";
+
+        const contOrder = ["亚洲", "欧洲", "美洲", "非洲", "大洋洲"];
+        const targetConts = state.selectedContinent === "ALL" ? contOrder : [state.selectedContinent];
+
+        let html = "";
+        targetConts.forEach(contName => {
+          const entries = Object.entries(SUBREGION_META).filter(([, m]) => m.contZh === contName);
+          html += `<div class="legend-group-title"><span>${contName}</span><span>${entries.length} 个次区域</span></div>`;
+          entries.forEach(([key, m]) => {
+            const isSel = state.selectedRegion === key;
+            html += `
+              <div class="legend-item ${isSel ? "selected" : ""}" data-region="${key}">
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:6px;">
+                  <div style="display:flex; align-items:center; gap:7px; min-width:0;">
+                    <span style="width:12px; height:12px; border-radius:4px; background:${m.color}; flex-shrink:0;"></span>
+                    <span style="font-size:12px; font-weight:700; color:var(--text-primary);">${m.zh}</span>
+                    <span style="font-size:11px; color:var(--text-muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${m.en}</span>
+                  </div>
+                </div>
+                <div style="font-size:11px; color:var(--text-secondary); margin-top:3px; padding-left:19px;">
+                  代表：${m.sample}
+                </div>
+              </div>
+            `;
+          });
+        });
+        listEl.innerHTML = html;
+      } else {
+        titleEl.textContent = `文化与地缘政治板块 (${Object.keys(CULTURAL_META).length}大板块)`;
+        subEl.textContent = "跨大洲历史文化圈与国际地缘分区";
+
+        listEl.innerHTML = Object.entries(CULTURAL_META).map(([key, m]) => {
+          const isSel = state.selectedRegion === key;
+          return `
+            <div class="legend-item ${isSel ? "selected indigo" : ""}" data-region="${key}">
+              <div style="display:flex; align-items:center; gap:7px;">
+                <span style="width:12px; height:12px; border-radius:4px; background:${m.color}; flex-shrink:0;"></span>
+                <span style="font-size:12px; font-weight:700; color:var(--text-primary);">${m.zh}</span>
+                <span style="font-size:11px; color:var(--text-muted);">${m.en}</span>
+              </div>
+              <div style="font-size:11px; color:var(--text-secondary); margin-top:3px; padding-left:19px; line-height:1.45;">
+                ${m.desc}
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      listEl.querySelectorAll(".legend-item").forEach(el => {
+        const regionKey = el.dataset.region;
+        el.addEventListener("mouseenter", () => {
+          state.hoveredRegion = regionKey;
+          updateMapStyles();
+        });
+        el.addEventListener("mouseleave", () => {
+          state.hoveredRegion = null;
+          updateMapStyles();
+        });
+        el.addEventListener("click", () => {
+          if (state.selectedRegion === regionKey) {
+            state.selectedRegion = null;
+            renderLegend();
+            updateMapStyles();
+            animateViewTo(0, 0, 1);
+          } else {
+            state.selectedRegion = regionKey;
+            renderLegend();
+            updateMapStyles();
+            const matched = WORLD_GEO_DATA.filter(item => getCountryGroupKey(item) === regionKey);
+            zoomToCountries(matched, 3.8);
+          }
+        });
+      });
+    }
+
+    /**
+     * =========================================================================
+     * 10. 搜索定位与高清 PNG 导出
+     * =========================================================================
+     */
+    function initSearch() {
+      const input = document.getElementById("country-search");
+      const clearBtn = document.getElementById("clear-search");
+      const dropdown = document.getElementById("search-results");
+
+      input.addEventListener("input", () => {
+        const q = input.value.trim().toLowerCase();
+        if (!q) {
+          clearBtn.style.display = "none";
+          dropdown.style.display = "none";
+          return;
+        }
+        clearBtn.style.display = "block";
+
+        const matches = WORLD_GEO_DATA.filter(c => {
+          const subZh = SUBREGION_META[c.sub]?.zh || "";
+          return c.zh.toLowerCase().includes(q) ||
+                 c.en.toLowerCase().includes(q) ||
+                 c.iso.toLowerCase().includes(q) ||
+                 subZh.includes(q);
+        }).slice(0, 12);
+
+        if (matches.length === 0) {
+          dropdown.innerHTML = `<div style="padding:10px; font-size:11px; color:var(--text-muted); text-align:center;">未找到匹配的国家或地区</div>`;
+        } else {
+          dropdown.innerHTML = matches.map(c => {
+            const m = SUBREGION_META[c.sub];
+            return `
+              <button class="search-item" data-iso="${c.iso}">
+                <div>
+                  <div style="font-size:12px; font-weight:600;">${c.zh} <span style="color:var(--text-muted); font-weight:400;">(${c.en})</span></div>
+                  <div style="font-size:11px; color:var(--text-secondary);">${m.contZh} · ${m.zh}</div>
+                </div>
+                <span style="width:10px; height:10px; border-radius:99px; background:${m.color}; flex-shrink:0;"></span>
+              </button>
+            `;
+          }).join("");
+        }
+
+        dropdown.style.display = "block";
+        dropdown.querySelectorAll(".search-item").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const target = WORLD_GEO_DATA.find(item => item.iso === btn.dataset.iso);
+            if (target) {
+              dropdown.style.display = "none";
+              input.value = target.zh;
+              onCountryClick({ stopPropagation: () => {} }, target);
+            }
+          });
+        });
+      });
+
+      clearBtn.addEventListener("click", () => {
+        input.value = "";
+        clearBtn.style.display = "none";
+        dropdown.style.display = "none";
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest(".search-box")) dropdown.style.display = "none";
+      });
+    }
+
+    function exportPng() {
+      const svgEl = document.getElementById("world-map");
+      const clone = svgEl.cloneNode(true);
+      const outW = 2000;
+      const outH = Math.round(outW * (state.baseHeight / state.baseWidth));
+      clone.setAttribute("width", outW);
+      clone.setAttribute("height", outH);
+
+      const isDark = document.documentElement.classList.contains("dark");
+      const oceanFill = isDark ? "#0b1324" : "#e6f0f8";
+      const countryStroke = isDark ? "#0f172a" : "#ffffff";
+      const labelFill = isDark ? "#f8fafc" : "#0f172a";
+      const subFill = isDark ? "#cbd5e1" : "#334155";
+      const haloStroke = isDark ? "rgba(11,19,36,0.92)" : "rgba(255,255,255,0.94)";
+      const leaderStroke = isDark ? "rgba(226,232,240,0.65)" : "rgba(30,41,59,0.55)";
+
+      // 将 CSS 变量内联为具体颜色，保证独立 SVG 图像正常渲染
+      const ocean = clone.querySelector("#ocean-rect");
+      if (ocean) ocean.setAttribute("fill", oceanFill);
+
+      clone.querySelectorAll(".country-shape").forEach(p => {
+        if (p.getAttribute("stroke") === "var(--country-stroke)") {
+          p.setAttribute("stroke", countryStroke);
+        }
+      });
+      clone.querySelectorAll(".region-label-title").forEach(t => {
+        t.setAttribute("fill", labelFill);
+        t.setAttribute("stroke", haloStroke);
+        t.setAttribute("font-family", "sans-serif");
+        t.setAttribute("font-weight", "700");
+        t.setAttribute("paint-order", "stroke fill");
+      });
+      clone.querySelectorAll(".region-label-sub").forEach(t => {
+        t.setAttribute("fill", subFill);
+        t.setAttribute("stroke", haloStroke);
+        t.setAttribute("font-family", "sans-serif");
+        t.setAttribute("font-weight", "600");
+        t.setAttribute("paint-order", "stroke fill");
+      });
+      clone.querySelectorAll(".label-leader").forEach(l => l.setAttribute("stroke", leaderStroke));
+      clone.querySelectorAll("circle").forEach(c => {
+        c.setAttribute("fill", labelFill);
+        c.setAttribute("stroke", haloStroke);
+      });
+
+      const serializer = new XMLSerializer();
+      const svgStr = serializer.serializeToString(clone);
+      const blob = new Blob([svgStr], { type: "image/svg+xml;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = outW;
+        canvas.height = outH;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, outW, outH);
+        URL.revokeObjectURL(url);
+
+        canvas.toBlob(pngBlob => {
+          const a = document.createElement("a");
+          a.download = state.mode === "m49" ? "World_UN_M49_Subregions.png" : "World_Cultural_Regions.png";
+          a.href = URL.createObjectURL(pngBlob);
+          a.click();
+          showToast("高清 2000px 世界分区地图已保存！");
+        }, "image/png");
+      };
+      img.src = url;
+    }
+
+    /**
+     * =========================================================================
+     * 11. 启动初始化（并发拉取真实边界后渲染）
+     * =========================================================================
+     */
+    async function initMapData() {
+      const dotEl = document.getElementById("status-dot");
+      const textEl = document.getElementById("status-text");
+      try {
+        WORLD_GEO_DATA = await loadRealWorldData();
+        buildMap();
+        if (dotEl) dotEl.className = "status-dot ready";
+        if (textEl) textEl.textContent = `真实国界: Natural Earth 110m (${WORLD_GEO_DATA.length} 国家/地区)`;
+      } catch (err) {
+        console.error("Failed to fetch Natural Earth TopoJSON:", err);
+        if (dotEl) dotEl.className = "status-dot error";
+        if (textEl) {
+          textEl.innerHTML = `真实边界拉取受限 <button id="retry-fetch-btn" style="margin-left:6px;border:none;background:#2563eb;color:#fff;padding:2px 7px;border-radius:5px;font-size:10px;cursor:pointer;">重试</button>`;
+          const retryBtn = document.getElementById("retry-fetch-btn");
+          if (retryBtn) retryBtn.addEventListener("click", initMapData);
+        }
+        showToast("当前网络无法访问地图 CDN，请点击右上角重试");
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      renderContinentTabs();
+      renderLegend();
+      initPanAndZoom();
+      initSearch();
+      initMapData();
+
+      // 模式切换
+      const btnM49 = document.getElementById("mode-m49");
+      const btnCul = document.getElementById("mode-cultural");
+
+      btnM49.addEventListener("click", () => {
+        if (state.mode === "m49") return;
+        state.mode = "m49";
+        state.selectedRegion = null;
+        btnM49.className = "seg-btn active";
+        btnCul.className = "seg-btn";
+        renderContinentTabs();
+        renderLegend();
+        renderMapLabels();
+      });
+
+      btnCul.addEventListener("click", () => {
+        if (state.mode === "cultural") return;
+        state.mode = "cultural";
+        state.selectedRegion = null;
+        state.selectedContinent = "ALL";
+        btnCul.className = "seg-btn active indigo";
+        btnM49.className = "seg-btn";
+        renderContinentTabs();
+        renderLegend();
+        renderMapLabels();
+      });
+
+      // 标注文字切换
+      const lblBtns = {
+        bilingual: document.getElementById("label-bilingual"),
+        zh: document.getElementById("label-zh"),
+        off: document.getElementById("label-off")
+      };
+      Object.entries(lblBtns).forEach(([k, btn]) => {
+        btn.addEventListener("click", () => {
+          state.labelMode = k;
+          Object.entries(lblBtns).forEach(([key, b]) => {
+            b.className = key === k ? "seg-btn active" : "seg-btn";
+          });
+          renderMapLabels();
+        });
+      });
+
+      // 缩放与重置
+      document.getElementById("zoom-in").addEventListener("click", () => {
+        const nextK = Math.min(10, state.view.k * 1.45);
+        const r = nextK / state.view.k;
+        const cx = state.baseWidth / 2;
+        const cy = state.baseHeight / 2;
+        animateViewTo(cx - (cx - state.view.x) * r, cy - (cy - state.view.y) * r, nextK, 250);
+      });
+
+      document.getElementById("zoom-out").addEventListener("click", () => {
+        const nextK = Math.max(1, state.view.k * 0.7);
+        if (nextK <= 1.02) {
+          animateViewTo(0, 0, 1, 250);
+        } else {
+          const r = nextK / state.view.k;
+          const cx = state.baseWidth / 2;
+          const cy = state.baseHeight / 2;
+          animateViewTo(cx - (cx - state.view.x) * r, cy - (cy - state.view.y) * r, nextK, 250);
+        }
+      });
+
+      document.getElementById("zoom-reset").addEventListener("click", () => animateViewTo(0, 0, 1));
+      document.getElementById("btn-reset").addEventListener("click", () => resetAll(true));
+      document.getElementById("legend-reset").addEventListener("click", () => resetAll(true));
+      document.getElementById("clear-filter-btn").addEventListener("click", () => resetAll(true));
+
+      // 导出 PNG
+      document.getElementById("btn-export").addEventListener("click", exportPng);
+
+      // 深色/浅色切换
+      document.getElementById("btn-theme").addEventListener("click", () => {
+        const isDark = document.documentElement.classList.toggle("dark");
+        document.getElementById("theme-icon").textContent = isDark ? "☀️" : "🌙";
+        updateMapStyles();
+      });
+    });
+  </script>
+</body>
+</html>
